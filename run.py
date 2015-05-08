@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import os
 import logging
 import flask
 import json
@@ -49,6 +50,35 @@ def html_to_pdf():
 	else:
 		flask.abort(400)
 
+@app.route('/url-to-pdf', methods=['POST'])
+def url_to_pdf():
+        """Takes an HTTP POST with a url, renders a pdf using phantomjs and returns
+        a pdf.
+
+        Example use with jQuery:
+
+                $.post('/url-to-pdf', {'url': url})
+
+        """
+        url = flask.request.form.get('url', '')
+        title = 'url2pdf'
+
+        try:
+                pdf_file = phantom.url_to_pdf(url)
+        except OSError as e:
+                # Reraise the error so flask can log it
+                raise e
+       
+        f.seek(0, os.SEEK_END)
+        size = f.tell()
+        f.seek(0, os.SEEK_SET)
+        if size:
+                return send_file(pdf_file, 
+                                 mimetype='application/pdf',
+                                 attachment_filename='{0}.pdf'.format(pdf_file.name.split(os.sep)[-1])
+                        )        
+        else:
+                flask.abort(400)
 
 if __name__ == '__main__':
 	# Set up logging to stdout, which ends up in Heroku logs

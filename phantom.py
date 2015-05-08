@@ -46,3 +46,36 @@ def html_to_pdf(html):
 	finally:
 		html_tmp.close()
 		pdf_tmp.close()
+
+def url_to_pdf(url):
+        """Runs phantomjs in a subprocess to render a URL into a pdf
+
+        Args:
+                url: URL to render
+
+        Returns:
+                File handle to temp file of pdf
+
+        Raises:
+                OSError: An error occured in running the phantomjs subprocess
+
+        """
+
+        # get a file name. This has a TOC/TOU problem but it shouldn't matter 
+        pdf_tmp  = tempfile.NamedTemporaryFile(mode='r+b', suffix='.pdf',dir='generated_pdfs').name
+        pdf_tmp.close()
+        
+        # edit rasterize_pdf to change size/header+footer settings
+        # maybe expose some options here if we need them
+        phantom_cmd = [ 'phantomjs',
+                        'phantom-scripts/rasterize.js',
+                        url,
+                        pdf_tmp]
+
+        try:
+            print subprocess.call(phantom_cmd)
+            pdf_tmp.seek(0)
+        except:
+            return pdf_tmp
+        else:
+            pdf_tmp.close()
