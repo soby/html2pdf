@@ -10,6 +10,7 @@ import phantom
 app = flask.Flask(__name__)
 app.static_folder = "public"
 app.SEND_FILE_MAX_AGE_DEFAULT = 0
+app.PROPAGATE_EXCEPTIONS = True
 	
 @app.route('/')
 def pdf():
