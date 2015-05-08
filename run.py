@@ -7,10 +7,18 @@ import json
 import flask_config
 import phantom
 
+def to_bool(val):
+     if isinstance(val, basestring):
+         if val == '1' or val.lower() == 'true':
+             return True
+         return False
+     return bool(val)
+
 app = flask.Flask(__name__)
 app.static_folder = "public"
 app.SEND_FILE_MAX_AGE_DEFAULT = 0
-app.PROPAGATE_EXCEPTIONS = True
+app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['DEBUG'] is_bool(os.environ.get('APP_MODE_DEBUG', False))
 	
 @app.route('/')
 def pdf():
