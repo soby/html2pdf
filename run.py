@@ -18,7 +18,7 @@ app = flask.Flask(__name__)
 app.static_folder = "public"
 app.SEND_FILE_MAX_AGE_DEFAULT = 0
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.config['DEBUG'] is_bool(os.environ.get('APP_MODE_DEBUG', False))
+app.config['DEBUG'] = is_bool(os.environ.get('APP_MODE_DEBUG', False))
 	
 @app.route('/')
 def pdf():
