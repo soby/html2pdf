@@ -68,13 +68,18 @@ def url_to_pdf(url):
         # edit rasterize_pdf to change size/header+footer settings
         # maybe expose some options here if we need them
         phantom_cmd = [ 'phantomjs',
+                        '--ignore-ssl-errors=true',
                         'phantom-scripts/rasterize.js',
                         url,
                         pdf_tmp]
 
         print subprocess.call(phantom_cmd)
-        if os.path.getsize(pdf_tmp):
-            return file(pdf_tmp,'rb')
-        else:
-            print 'no file or empty';
+        try:
+            size = os.path.getsize(pdf_tmp)
+        except:
             return None
+        else:
+            if size:
+                return file(pdf_tmp,'rb')
+            else:
+                return None
