@@ -74,8 +74,8 @@ def url_to_pdf(url):
 
         try:
             print subprocess.call(phantom_cmd)
-            pdf_tmp.seek(0)
+            pdf_file = file(pdf_tmp,'wb')
         except:
-            return pdf_tmp
+            return pdf_file
         else:
-            pdf_tmp.close()
+            pdf_file.close()

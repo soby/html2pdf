@@ -78,9 +78,9 @@ def url_to_pdf():
                 # Reraise the error so flask can log it
                 raise e
        
-        f.seek(0, os.SEEK_END)
-        size = f.tell()
-        f.seek(0, os.SEEK_SET)
+        pdf_file.seek(0, os.SEEK_END)
+        size = pdf_file.tell()
+        pdf_file.seek(0, os.SEEK_SET)
         if size:
                 return send_file(pdf_file, 
                                  mimetype='application/pdf',
