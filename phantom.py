@@ -73,4 +73,8 @@ def url_to_pdf(url):
                         pdf_tmp]
 
         print subprocess.call(phantom_cmd)
-        return file(pdf_tmp,'rb')
+        if os.path.getsize(pdf_tmp):
+            return file(pdf_tmp,'rb')
+        else:
+            print 'no file or empty';
+            return None
