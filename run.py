@@ -82,9 +82,9 @@ def url_to_pdf():
         size = pdf_file.tell()
         pdf_file.seek(0, os.SEEK_SET)
         if size:
-                return send_file(pdf_file, 
-                                 mimetype='application/pdf',
-                                 attachment_filename='{0}.pdf'.format(pdf_file.name.split(os.sep)[-1])
+                return flask.send_file(pdf_file, 
+                                       mimetype='application/pdf',
+                                       attachment_filename='{0}.pdf'.format(pdf_file.name.split(os.sep)[-1])
                         )        
         else:
                 flask.abort(400)
