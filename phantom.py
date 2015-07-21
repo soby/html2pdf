@@ -71,9 +71,10 @@ def url_to_pdf(url):
                         '--ignore-ssl-errors=true',
                         'phantom-scripts/rasterize.js',
                         url,
-                        pdf_tmp]
+                        pdf_tmp,
+                        'A4']
 
-        print subprocess.call(phantom_cmd)
+        print '***',subprocess.call(phantom_cmd)
         try:
             size = os.path.getsize(pdf_tmp)
         except:
