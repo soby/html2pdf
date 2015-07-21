@@ -63,8 +63,7 @@ def url_to_pdf(url):
         """
 
         # get a file name. This has a TOC/TOU problem but it shouldn't matter 
-        pdf_tmp  = tempfile.NamedTemporaryFile(mode='w+b', suffix='.pdf', delete=False, dir='generated_pdfs').name
-        pdf_tmp.close()
+        pdf_tmp  = tempfile.NamedTemporaryFile(mode='w+b', suffix='.pdf', delete=True, dir='generated_pdfs').name
         
         # edit rasterize_pdf to change size/header+footer settings
         # maybe expose some options here if we need them
