@@ -74,7 +74,9 @@ def url_to_pdf(url):
                         pdf_tmp,
                         'A4']
 
-        print '***',subprocess.call(phantom_cmd)
+        ret = subprocess.call(phantom_cmd)
+        if ret:
+            return None
         try:
             size = os.path.getsize(pdf_tmp)
         except:
