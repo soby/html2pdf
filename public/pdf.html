@@ -9,15 +9,13 @@
 	</style>
   </head>
   <body>
-    <form action="html-to-pdf" method="post">
     <h1>SBN to PDF Creator</h1>
     <p>Enter a full URL and a sessionId. This will return a PDF from the HTML. For direct POSTing, use parameters "url" and "session" to POST to /url-to-pdf .</p>
 
     <form action="url-to-pdf" method="post">
-    <h1>HTML to PDF Creator</h1>
-    <p>Or paste in a URL</p>
+
     <input size="100" name="url" placeholder="URL"></input>
-    <input size="40" name="session" placeholder="session (name:value)"></input>
+    <input size="40" name="session" placeholder="session ID"></input>
     <div><input type="submit" value="create"/></div>
     </form>
   </body>
