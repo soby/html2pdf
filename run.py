@@ -70,10 +70,12 @@ def url_to_pdf():
 
         """
         url = flask.request.form.get('url', '')
+        header = flask.request.form.get('header',None)
+
         title = 'url2pdf'
 
         try:
-                pdf_file = phantom.url_to_pdf(url)
+                pdf_file = phantom.url_to_pdf(url, header)
         except OSError as e:
                 # Reraise the error so flask can log it
                 raise e
