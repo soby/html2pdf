@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import os
 import tempfile
 import subprocess
 import md5
@@ -76,13 +77,22 @@ def url_to_pdf(url):
 
         ret = subprocess.call(phantom_cmd)
         if ret:
+            print 'Call to phantomjs failed'
+            return None
+        try:
+            os.stat(pdf_tmp)
+        except OSError:
+            print 'File not created'
             return None
         try:
             size = os.path.getsize(pdf_tmp)
         except:
+            print 'Could not get file size'
             return None
         else:
             if size:
+                print 'Returning file of %s size' % size
                 return file(pdf_tmp,'rb')
             else:
+                print 'Empty file created'
                 return None
