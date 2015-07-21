@@ -48,7 +48,7 @@ def html_to_pdf(html):
 		html_tmp.close()
 		pdf_tmp.close()
 
-def url_to_pdf(url, header=None):
+def url_to_pdf(url, session=None):
         """Runs phantomjs in a subprocess to render a URL into a pdf
 
         Args:
@@ -70,8 +70,8 @@ def url_to_pdf(url, header=None):
                         'phantom-scripts/rasterize.js',
                         url,
                         pdf_tmp]
-        if header:
-            phantom_cmd.append(header)
+        if session:
+            phantom_cmd.append(session)
  
         ret = subprocess.call(phantom_cmd)
         if ret:
