@@ -10,13 +10,21 @@
   </head>
   <body>
     <h1>SBN to PDF Creator</h1>
+    <form action="html-to-pdf" method="post">
+      <p>Paste in some HTML and press create. This will return a PDF from the HTML. <a href="https://github.com/optional-is/html2pdf">You can read more information about how to setup your own instance on our github page</a>.</p>
+      <div><textarea name="html" style="width: 100%" rows="20">
+      <div><input type="submit" value="create"/></div>
+    </form>
+  
+    <br /><br />
+
     <p>Enter a full URL and a sessionId. This will return a PDF from the HTML. For direct POSTing, use parameters "url" and "session" to POST to /url-to-pdf .</p>
 
     <form action="url-to-pdf" method="post">
 
-    <input size="100" name="url" placeholder="URL"></input>
-    <input size="40" name="session" placeholder="session ID"></input>
-    <div><input type="submit" value="create"/></div>
+      <input size="100" name="url" placeholder="URL"></input>
+      <input size="40" name="session" placeholder="session ID"></input>
+      <div><input type="submit" value="create"/></div>
     </form>
   </body>
 </html>
