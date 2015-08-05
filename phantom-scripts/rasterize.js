@@ -1,42 +1,56 @@
 //https://github.com/ariya/phantomjs/blob/master/examples/rasterize.js
+var args = require('./minimist.js')(phantom.args);
+var b64 = require('./b64.js');
+
 var page = require('webpage').create(),
     system = require('system'),
     address, output, size;
 
-if (system.args.length < 3 || system.args.length > 5) {
-    console.log('Usage: rasterize.js URL filename [paperwidth*paperheight|paperformat] [zoom]');
-    console.log('  paper (pdf output) examples: "5in*7.5in", "10cm*20cm", "A4", "Letter"');
-    console.log('  image (png/jpg output) examples: "1920px" entire page, window width 1920px');
-    console.log('                                   "800px*600px" window, clipped to 800x600');
+if (args['_'].length < 2 ) {
+    console.log('Usage: rasterize.js URL filename [--session session-id] [--header header-base64]');
     phantom.exit(1);
 } else {
-    address = system.args[1];
-    output = system.args[2];
+    address = args['_'][0];
+    output = args['_'][1];
+
+    header_b64 = args['header'];
+    headerStr = null;
+    header : {};
+    
     page.viewportSize = { width: 600, height: 600 };
 
-    page.paperSize = {
-	format: "A4",
-	orientation: "portrait",
+    pz = {
+        format: "A4",
+        orientation: "portrait",
 
-	footer: {
-		height: "0.9cm",
-		contents: phantom.callback(function (pageNum, numPages) {
-			return "<div style='text-align:center;'><small>" + pageNum +
-					" / " + numPages + "</small></div>";
-		})
-	}
+        footer: {
+            height: "0.9cm",
+            contents: phantom.callback(function (pageNum, numPages) {
+                return '<h4 style="text-align:center; display: block ">' + pageNum + " / " + numPages + '</h4>';
+            })
+        },
     };
 
-    if (system.args.length > 3) {
+    
+
+	if ((typeof header_b64 !== 'undefined') && (header_b64 != null)) {
+        pz.header = { 'height':'1cm',
+                      'contents': phantom.callback(function (pageNum, numPages) { return b64.toString(header_b64); })
+                    }
+    }
+
+    page.paperSize = pz;
+
+    if ((typeof args['session'] !== 'undefined') && (args['session'])) {
         var parser = document.createElement('a');
         parser.href = address;
 
         phantom.addCookie({
           'name': 'sessionid',
-          'value': system.args[3],
+          'value': args['session'],
           'domain': parser.hostname
         });
-        page.customHeaders = { 'Authorization': 'session '+system.args[3]};
+        page.customHeaders = { 'Authorization': 'session '+args['session']};
     }
 
     page.onError = function(msg, trace) { 

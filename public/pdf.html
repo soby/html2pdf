@@ -13,6 +13,8 @@
     <form action="html-to-pdf" method="post">
       <p>Paste in some HTML and press create. This will return a PDF from the HTML. <a href="https://github.com/optional-is/html2pdf">You can read more information about how to setup your own instance on our github page</a>.</p>
       <div><textarea name="html" style="width: 100%" rows="20"></textarea></div>
+      <input size="40" name="session" placeholder="session ID"></input>
+      <input size="80" name="header" placeholder="header HTML"></input>
       <div><input type="submit" value="create"/></div>
     </form>
   
@@ -24,6 +26,7 @@
 
       <input size="100" name="url" placeholder="URL"></input>
       <input size="40" name="session" placeholder="session ID"></input>
+      <input size="80" name="header" placeholder="header HTML"></input>
       <div><input type="submit" value="create"/></div>
     </form>
   </body>
