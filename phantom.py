@@ -25,7 +25,7 @@ def html_to_pdf(html, session=None, header=None):
     # require use of phantomjs version 1.9, which (as of 2013-3-2) hasn't been
     # released
     html_tmp = tempfile.NamedTemporaryFile(mode='w+b', dir="phantom-scripts", suffix='.html')
-    html_tmp.write(html)
+    html_tmp.write(html.encode('utf-8'))
     html_tmp.seek(0)
     
     return url_to_pdf(html_tmp.name, session, header)
