@@ -6,6 +6,27 @@ var page = require('webpage').create(),
     system = require('system'),
     address, output, size;
 
+function replaceCssWithComputedStyle(html) {
+  return page.evaluate(function(html) {
+    var host = document.createElement('div');
+    host.setAttribute('style', 'display:none;'); // Silly hack, or PhantomJS will 'blank' the main document for some reason
+    host.innerHTML = html;
+
+    // Append to get styling of parent page
+    document.body.appendChild(host);
+
+    var elements = host.getElementsByTagName('*');
+    // Iterate in reverse order (depth first) so that styles do not impact eachother
+    for (var i = elements.length - 1; i >= 0; i--) {
+      elements[i].setAttribute('style', window.getComputedStyle(elements[i], null).cssText);
+    }
+
+    // Remove from parent page again, so we're clean
+    document.body.removeChild(host);
+    return host.innerHTML;
+  }, html);
+}
+
 if (args['_'].length < 2 ) {
     console.log('Usage: rasterize.js URL filename [--session session-id] [--header header-base64]');
     phantom.exit(1);
@@ -26,7 +47,7 @@ if (args['_'].length < 2 ) {
         footer: {
             height: "0.9cm",
             contents: phantom.callback(function (pageNum, numPages) {
-                return '<h4 style="text-align:center; display: block ">' + pageNum + " / " + numPages + '</h4>';
+                return replaceCssWithComputedStyle('<span class="footer">' + pageNum + " / " + numPages + '</span>');
             })
         },
     };
@@ -35,7 +56,7 @@ if (args['_'].length < 2 ) {
 
 	if ((typeof header_b64 !== 'undefined') && (header_b64 != null)) {
         pz.header = { 'height':'1cm',
-                      'contents': phantom.callback(function (pageNum, numPages) { return b64.toString(header_b64); })
+                      'contents': phantom.callback(function (pageNum, numPages) { return replaceCssWithComputedStyle(b64.toString(header_b64)); })
                     }
     }
 
