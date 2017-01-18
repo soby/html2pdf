@@ -12,6 +12,23 @@ if (phantom.args.length < 2 || phantom.args.length > 3) {
 			format: 'A4',
 			orientation: 'portrait',
 			border: '1.5cm'
+			header: {
+            height: "1cm",
+            contents: phantom.callback(function(pageNum, numPages) {
+                return "<div><img src="http://files.parsetfss.com/54314910-905e-4901-af3c-56382e52a40e/tfss-89f75112-5812-4d65-8d51-0a947b2ecb71-st_logo.gif" style="text-align:left; display: block "/></div>";
+            })
+        }
+
+			footer: {
+            height: "1cm",
+            contents: phantom.callback(function(pageNum, numPages) {
+                if (pageNum == numPages) {
+                    return "";
+                }
+                return "<h4 style="text-align:center; display: block ">" + pageNum + " / " + numPages + "</h4>";
+            })
+        }
+
 		};
 
     page.onConsoleMessage = function(msg) { console.log(msg); };
